@@ -1,8 +1,6 @@
 # ignore list
-/target/
-/reports/
 /test-output/
 /.project/
-/.clsspath/
+/.classpath/
 /.allure/
 
