@@ -1,30 +1,28 @@
 package hooks;
 
-import static constants.Constants.*;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
-
 import base.Base;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.restassured.RestAssured;
+import static constants.Constants.*;
 
 public class Hooks extends Base {
 	
+	/*
+	 * This cucumber @Before method sets the baseURI and Authentication.
+	 * It is called before every scenario starts.
+	 */
 	@Before
-	public void setUp() throws FileNotFoundException, IOException{ 
-		Properties prop = new Properties();
-		prop.load(new FileInputStream(new File(getFileFromResources(PROPERTY_FILE))));
+	public void beforeScenario(){ 
+		loadProperties();
+		RestAssured.baseURI = INTERNET_PROTOCOL+SERVER+RESOURCE;
 		try {
-			if(prop.getProperty(AUTH_TYPE).equalsIgnoreCase(AUTH_TYPE_BASIC)) {
-				RestAssured.baseURI = INTERNET_PROTOCOL+prop.getProperty(SERVER)+prop.getProperty(RESOURCE);
-				RestAssured.authentication = RestAssured.basic(prop.getProperty(USERNAME), prop.getProperty(PASSWORD));
-			}else if(prop.getProperty(AUTH_TYPE).equalsIgnoreCase(AUTH_TYPE_OAUTH2)) {
-				RestAssured.authentication = RestAssured.oauth2(prop.getProperty("oauth2"));
+			if(AUTH_TYPE.equalsIgnoreCase(AUTH_TYPE_BASIC)) {				
+				RestAssured.authentication = RestAssured.basic(BASIC_USERNAME, BASIC_PASSWORD);
+			}else if((AUTH_TYPE).equalsIgnoreCase(AUTH_TYPE_OAUTH2)) {
+				RestAssured.authentication = RestAssured.oauth2(getOAuthAccessToken());
+			}else if((AUTH_TYPE).equalsIgnoreCase(AUTH_TYPE_JWT)) {
+				RestAssured.authentication = RestAssured.oauth2("");//TBD
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -32,8 +30,12 @@ public class Hooks extends Base {
 		
 	}
 	
+	/*
+	 * This cucumber @After method logs the status code of the service call.
+	 * It is called after every scenario ends.
+	 */
 	@After
-	public void tearDown(){ 
+	public void afterScenario(){ 
 		response.then().log().status();
 	}
 }

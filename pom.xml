@@ -20,18 +20,29 @@
 	<dependency>
 	    <groupId>io.cucumber</groupId>
 	    <artifactId>cucumber-java</artifactId>
-	    <version>5.5.0</version>
+	    <version>7.11.0</version>
 	</dependency>
 	<dependency>
 	    <groupId>io.cucumber</groupId>
 	    <artifactId>cucumber-testng</artifactId>
-	    <version>5.5.0</version>
+	    <version>7.11.0</version>
 	</dependency>
 	<dependency>
         <groupId>io.qameta.allure</groupId>
-        <artifactId>allure-cucumber5-jvm</artifactId>
-        <version>2.23.0</version>
+        <artifactId>allure-cucumber4-jvm</artifactId>
+        <version>2.13.3</version>
     </dependency>
+    <dependency>
+			<groupId>io.qameta.allure</groupId>
+			<artifactId>allure-testng</artifactId>
+			<version>2.13.3</version>
+		</dependency>
+	<dependency>
+	    <groupId>com.github.tomakehurst</groupId>
+	    <artifactId>wiremock</artifactId>
+	    <version>2.27.2</version>
+	    <scope>test</scope>
+	</dependency>    
   </dependencies>
   
   <build>
@@ -43,7 +54,7 @@
             <configuration>
                 <argLine>
                     -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                    -Dcucumber.options="--plugin io.qameta.allure.cucumber5jvm.AllureCucumber5Jvm"
+                    -Dcucumber.options="--plugin io.qameta.allure.cucumber4jvm.AllureCucumber4Jvm"
                 </argLine>
             </configuration>
             <dependencies>

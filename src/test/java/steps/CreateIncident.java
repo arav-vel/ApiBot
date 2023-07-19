@@ -5,12 +5,10 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.io.File;
-import java.io.InputStream;
 
 import base.Base;
 import io.cucumber.java.en.*;
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 
 public class CreateIncident extends Base{
 	
@@ -19,12 +17,12 @@ public class CreateIncident extends Base{
 	public void createBodyUsingDataFile(String fileName) {
 		request = RestAssured
 				.given()
-				.contentType(ContentType.JSON)
+				.contentType(CONTENT_TYPE_JSON)
 				.body(new File(getFileFromResources(BODY_TEST_DATA_PATH+fileName)));
 	}
 	@When("Hit the request with POST method.")
 	public void hitTheRequestWithPOSTMethod() {
-		response = request.post("/incident");
+		response = request.post(INCIDENT_TABLE_PATH);
 	}
 	@Then("The status code should be {int}")
 	public void theStatusCodeShouldBe(int actualStatusCode) {
